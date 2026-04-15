@@ -1,36 +1,36 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
+export function useFetch(url){
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-export default function useFetch(url){
-    const [data, useData] = useState(null);
-    const [loading, useLoading] = useState(true);
-    const [error, useError] = useState(null);
-
-    useEffect( () => {
+    useEffect(() => {
         const controller = new AbortController();
-        const signal = controller.signal;
+
         const fetchedData = async () => {
-
             try {
-                useLoading(true);
-                const respuesta = await axios.get(url, { signal });
-                useData(respuesta.data);
-            }catch (error) {
-                useError(error);
+                setLoading(true);
+                const response = await axios.get(url, {
+                    signal: controller.signal
+                });
+                setData(response.data);
+            } catch (error) {
+                if (axios.isCancel(error) || error.name === 'CanceledError') return;
+                setError(error);
             } finally {
-                useLoading(false);
+                setLoading(false);
             }
-
         };
+
         fetchedData();
-        return() => {
+
+        return () => {
             controller.abort();
         };
-
     }, [url]);
 
     return [data, loading, error];
-
 }
 
