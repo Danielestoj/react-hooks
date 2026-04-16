@@ -1,11 +1,9 @@
-// src/components/UserGists.jsx
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+
 import { useFetch } from '../hooks/useFetch';
 
 const UserGists = () => {
   const username = 'gaearon'; // A famous React developer!
-  const [gists, loading, error] = useFetch(`https://api.github.com/users/${username}/gists`);
+  const {data: gists, loading, error} = useFetch(`https://api.github.com/users/${username}/gists`);
   if (loading) return <p>Loading {username}'s gists...</p>;
   if (error) return <p>Error fetching gists: {error.message}</p>;
 
