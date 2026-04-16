@@ -1,3 +1,6 @@
+// src/components/UserGists.jsx
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useFetch } from '../hooks/useFetch';
 
 const UserGists = () => {
